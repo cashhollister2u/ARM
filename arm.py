@@ -19,7 +19,7 @@ def main(stdscr):
     position = 0
 
     # regulate smoothness of motor
-    step_size = 4
+    step_size = 7
     current_step = 0
 
     while True:
@@ -31,30 +31,38 @@ def main(stdscr):
         # rotate left 
         elif key == curses.KEY_LEFT and position >= 0:
             while current_step <= step_size:
+                time.sleep(0.01)
                 position -= 1
                 kit.stepper1.onestep(direction=stepper.BACKWARD, style=stepper.DOUBLE)
                 stdscr.addstr(1, 0, "Moving Left")
                 current_step += 1
-                time.sleep(0.01)
             current_step = 0 # reset step count
 
         # rotate right
         elif key == curses.KEY_RIGHT and position <= 150:
             while current_step <= step_size:
+                time.sleep(0.01)
                 position += 1
                 kit.stepper1.onestep(style=stepper.DOUBLE)
                 stdscr.addstr(1, 0, "Moving Right")
                 current_step += 1
-                time.sleep(0.01)
+                
             current_step = 0 # reset step count
 
         stdscr.refresh()
+        #time.sleep(0.01)
+
+    # return home
+    while position >= 0:
+        position -= 1
+        kit.stepper1.onestep(direction=stepper.BACKWARD)
+        stdscr.addstr(1, 0, "resetting postion")
         time.sleep(0.01)
 
     # return home
-    while position != 0:
-        position -= 1
-        kit.stepper1.onestep(direction=stepper.BACKWARD)
+    while position <= 0:
+        position += 1
+        kit.stepper1.onestep()
         stdscr.addstr(1, 0, "resetting postion")
         time.sleep(0.01)
 
