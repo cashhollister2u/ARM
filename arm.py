@@ -55,14 +55,14 @@ def main(stdscr):
     # return home
     while position >= 0:
         position -= 1
-        kit.stepper1.onestep(direction=stepper.BACKWARD)
+        kit.stepper1.onestep(direction=stepper.BACKWARD, style=stepper.DOUBLE)
         stdscr.addstr(1, 0, "resetting postion")
         time.sleep(0.01)
 
     # return home
     while position <= 0:
         position += 1
-        kit.stepper1.onestep()
+        kit.stepper1.onestep(style=stepper.DOUBLE)
         stdscr.addstr(1, 0, "resetting postion")
         time.sleep(0.01)
 
